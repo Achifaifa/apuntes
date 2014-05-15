@@ -1,0 +1,102 @@
+8086
+Registros (16 bits)
+  De datos (Utilizados para almacenar datos del programa, evitando accesos innecesarios a memoria). 
+  Se subdividen en dos registros de 8 bits (Misma letra inicial, terminado en H si se refiere a la parte superior y L a la parte inferior).
+    AX (Accumulator)
+      Registro principal, se usa en operaciones matemáticas y en algunas operaciones de entrada y salida.
+    BX (Base)
+      Se utiliza en algunos modos de direccionamiento para formar la direccion de memoria en la que se almacena un dato.
+      Se usa para indicar el desplazamiento para referenciar direcciones de memoria con direccionamiento indirecto.
+    CX (Counter)
+      Se utiliza con las instrucciones de repetición y de bucle almacenando el número de veces que se repetirá una instrucción o fragmento de programa.
+      También se utiliza en instrucciones de desplazamiento y rotación.
+    DX (Data)
+       Se usa junto al registro AX en operaciones aritméticas de 32 bits, y en las de entrada/salida para especificar la dirección del puerto de comunicación.
+       
+  De segmento
+    CS (Code segment) 
+      Dirección de memoria donde empieza el segmento de código. Apunta al segmento donde están las instrucciones del programa que se está ejecutando.
+    DS (Data segment) 
+      Dirección de memoria donde empieza el segmento de datos. Apunta al segmento donde están los datos del programa en ejecución.
+    SS (Stack segment) 
+      Dirección de memoria donde empieza el segmento de pila.
+    ES (Extra segment) 
+      Dirección de memoria donde empieza el segmento extra (Ampliación del segmento de datos).
+      
+  Especiales
+    IP (Instruction pointer)
+      Apunta en todo momento a la dirección de la siguiente instrucción que debe ejecutarse. Indica el desplazamiento respecto a CS.
+    SP (Stack pointer)
+      Indica el desplazamiento respecto a SS.
+    Banderas*
+            [..|..|..|..|OF|IF|DF|TF|SF|ZF|..|AF|..|PF|..|CF]
+	          [15|14|13|12|11|10|09|08|07|06|05|04|03|02|01|00]
+      Se utilizan para indicar al programa qué condiciones han tenido lugar tras la última operación realizada.
+      Cada uno de los bits del registro de banderas marca si se ha producido una de estas condiciones.
+      Los bits 0,2,4,6, 7 y 11 son indicadores de condición que reflejan los resultados de operaciones, normalmente matemáticas o de comparación.
+      Los bits 8, 9 y 10 son indicadores de control en los que se puede definir el funcionamiento del microprocesador.
+      
+      Banderas de condición
+	CF (00): Carry flag
+	  Se activa cuando existe acarreo tras una operación.
+	PF (02): Parity flag
+	  Se activa cuando tras una operación la suma de los bits a 1 es par.
+	AF (04): Auxiliary flag
+	  Se activa si se produce un acarreo entre los bits 7 y 8 trabajando a 16 bits; o entre los bits 3 y 4 trabajando a 8 bits.
+	ZF (06): Zero flag
+	  Se activa si el resultado de la última operación es 0.
+	SF (07): Sign flag
+	  Se activa si el resultado es negativo.
+	OF (11): Overflow flag
+	  Se activa si el resultado de la última operación cambia el bit de signo de manera incorrecta (El resultado no se puede almacenar)
+	  
+      Banderas de control
+	TF (08): Track flag
+	  Cuando está activada obliga al procesador a trabajar paso a paso, generando una interrupción interna tras la ejecución de cada instrucción.
+	IF (09): Interrupt flag
+	  Si se activa permite a la CPU que atienda las peticiones de interrupción externas.
+	DF (10): Direction flag
+	  Se utiliza para operaciones con cadenas. Si está activada la cadena se procesa de derecha a izquierda, si no está activada se procesa de izquierda a derecha.
+
+  De índice y puntero
+    Se pueden utilizar para almacenar datos de forma temporal. Su principal finalidad es la de almacenar la posición de memoria donde se encuentra el dato que se quiere manejar
+    SI: Source index
+      Se utiliza para indicar la dirección donde comienzan los datos a leer.
+    DI: Destination index
+      Se utiliza para indicar la dirección donde finalizan los datos a leer.
+    BP: Base pointer
+      Se utiliza por instrucciones que quieren acceder a datos almacenados en la pila.
+
+Interrupciones
+  Internas (Excepciones):
+    Las genera la propia CPU cuando se produce una situación anormal (División entre 0, desbordamiento, overheating...).
+  De software:
+    Son las programadas en el software.
+  De hardware:
+    Generadas por el ordenador en respuesta a algún evento (Pulsación de teclas, puertos serie, etc).
+    
+Modos de direccionamiento
+  Direccionamiento por registros
+    Indica el nombre de un registro como fuente o destino de los datos de una instrucción (mov).
+  Direccionamiento inmediato
+    Consiste en indicar el valor numérico necesario para la operación.
+  Direccionamiento directo o absoluto
+    Consiste en indicar una dirección absoluta (Segmento:desplazamiento) con la que se quiere trabajar en la instrucción.
+  Direccionamiento indirecto por registro
+    En este modo de direccionamiento la dirección de memoria con la que se intercambia el dato está contenida en un registro. Se representa como la anterior, pero colocando entre corchetes el nombre del registro.
+	
+	      CS | SS | DS | ES
+    IF	pd   --   --   --
+    SF	--   pd   --   --
+    BP	cp   pd   cp   cp	CP: Con prefijo
+    BX	cp   cp   pd   cp	PD: Por defecto
+    SI	cp   cp   pd   cp
+    DI	cp   cp   pd   cp
+    
+  Direccionamiento relativo a base: Similar al anterior, pero el offset de los datos se obtiene por la suma de un registro base (BX/BP) mas un valor constante.
+    El registro BX utiliza por defecto el segmento de datos, y el BP el de pila (Ver tabla).
+  Indexado: Como el anterior, pero se utilizan los registros SI y DI (Ambos por defecto con el segmento de datos (Ver tabla).
+  Direccionamiento indexado a base: Mezcla de los dos anteriores. En él participan dos registros, uno actuando como base (BX/BP) y otro actuando como índice (SI/BI).
+    A la suma se añade un valor de desplazamiento para obtener la dirección de memoria con la que se quiere trabajar.
+    Normalmente se toma por defecto el segmento correspondiente al registro base.
+  

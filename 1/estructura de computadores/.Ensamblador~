@@ -1,0 +1,124 @@
+Ensamblador
+  Contenido del módulo fuente
+    Consta principalmente de dos tipos de sentencias
+      Instrucciones [Etiqueta] nombre [operandos][comentario]:
+	Representaciones simbólicas de las instrucciones del procesador
+	Etiqueta: Nombre simbólico de la posición de memoria donde empieza la instrucción
+	  El primer caracter no puede ser un número
+	  Si se va a utilizar el punto, debe ser el primero
+	  No se pueden usar símbolos reservados (Nombres de registro, de instrucciones, etc)
+	  Puede tener el caracter ':' al final o no tenerlo
+	    Con :, el atributo de la etiqueta es 'near'
+	      Se va a referenciar a la instrucción dentro del mismo segmento de código
+	    Sin :, el atributo es 'far'
+	      Se va a referenciar a la instrucción fuera del segmento de código
+	nombre: Nombre de la instrucción
+	operandos: Operandos asociados a la operación
+	  Pueden ser registros, posiciones de memoria o valores inmediatos
+      Directivas (Pseudo operaciones) [nombre] directiva [operandos] [comentario]
+	Indica al compilador qué hacer con las instrucciones y los datos, se ejecutan en tiempo de compilación
+    Constantes
+      Binarias (b)
+      Octales (o)
+      Decimales (d)
+      Hexadecimales (h)
+      Caracteres (Entrecomillados)
+      
+    Operadores
+      Tipos de operadores
+        Aritméticos (+, -, *, /, mod, shl, shr)
+          SHL: Desplazar a la izquierda
+          SHR: Desplazar a la derecha
+        Lógicos (and, or, not, xor)
+        Relacionales (eq, ne, lt, gt, le, ge)
+        Retorno de valores (offset, type, size)
+          Offset: Devuelve el valor del desplazamiento de la variable o de la etiqueta
+          Type: Devuelve 1 si es un byte, 2 si es una palabra, 4/8 doble palabra, 10 cuádrupe palabra
+     
+    Instrucciones
+      De transferencia de datos (No afectan a las banderas)
+        MOV[destino][origen]
+          Transfiere un byte o una palabra desde el origen (Registro, posición de memoria o valor inmediato) al destino (Registro o posición de memoria)
+          No se pueden mover datos entre dos posiciones de memoria
+          No se pueden utilizar los registros de segmento como destino;
+        PUSH[origen]
+          Decrementa SP en dos unidades y almacena el operando fuente de 16 bits en la pila
+        POP[destino]
+          Coloca el primer dato de la pila en el registro de origen
+        XCHC[destino][fuente]
+          Intercambia el contenido entre los dos operandos
+          No se pueden utilizar registros de segmento
+        XLAT[tabla]
+          Recoge de una tabla de bytes el correspondiente a un índice que se le indica en un parámetro
+          El valor de AL se utiliza como índice de la tabla
+          El valor se devuelve en AL
+          En el registro BX se indica el offset de la tabla
+          La longitud máxima de la tabla es de 256 bytes
+          El primer elemento de la tabla tiene índice 0
+          La tabla debe de ser de tipo byte
+        IN[byte o palabra]
+          Recoge un byte de un puerto de entrada y lo deposita en AL o AX
+        OUT [byte o palabra]
+          Recoge un byte de AL o AX y lo deposita en un puerto de salida
+        LEA[destino][fuente]
+          Transfiere el desplazamiento del operando fuente al destino
+        SAHF
+          Transfiere bits desde AH a las banderas 
+          bit 7 - SF; bit 6 - ZF; bit 4 - AF; bit 2 - PF; bit 0 - CF
+        PUSHF
+          Trasnfiere el registro de banderas a la pila
+        LAHF
+          Copia las banderas en el registro AH
+        POPF
+          Transfiere banderas de la pila al registro de banderas
+      Aritméticas
+        ADD[destino][origen]
+          Suma el origen y el destino y almacena el resultado en el destino
+          El operando fuente puede ser un valor inmediato, una posición de memoria o un registro
+          El operando destino puede ser una posición de memoria o un registro
+        ADC[destino][origen]
+          similar a ADD
+          Al resultado le suma 1 si CF=1
+        SUB[destino][origen]
+          Resta el operando origen del operando destino, almacena el resultado en el destino
+        SBB[destino][origen]
+          Similar a SUB
+          Al resultado le resta 1 si CF=1
+        MUL[origen]
+          El origen puede ser un registro o una posición de memoria
+          Se puede trabajar con bytes o palabras en el origen
+            Si se tabaja con bytes multiplica sin considerar signo el contenido de AL y el origen. Deja el resultado en AX
+            Si se trabaja con palabras multiplica el contenido de AX por el origen. Deja el resultado en AXDX
+          Si la mitad superior del resultado no es 0 se activan las banderas CF y OF
+        IMUL[origen]
+          Como MUL, pero teniendo en cuenta el signo
+        DIV[origen]
+          Se puede trabajar con bytes o con palabras
+            Si se trabaja con bytes divide sin considerar el signo el contenido de AL y el origen. Deja el resultado en AL y el resto en AH
+            Si se trabaja con palabras, divide sin considerar el signo el contenido de DXAX y el origen. Deja el resultado en AX y el resto en DX
+        IDIV[origen]
+          Como DIV, pero teniendo en cuenta el signo
+        AAA
+          Corrige el resultado en AL de la suma de dos números decimales desempaquetados, convirtiéndolo en un valor decimal desempaquetado.
+          Si el valor decimal desempaquetado de AL es mayor que 9 o si se activa la bandera AF (acarreo entre los bits 3 y 4) se sumará 6 a AL y se aumentará AH en una unidad
+        AAS
+          Como AAA, pero para la resta
+        AAM
+          Como AAA, pero para el producto
+        AAD 
+          Como AAA, pero para la división
+        DAA
+          Como AAA, pero para números empaquetados
+        DAS
+          Como DAA, pero para la resta
+        CBW
+          Convierte un byte en palabra. Copia el bit 7 del registro AL en todos los bits del registro AH
+        CBD
+          Convierte una palabra en doble palabra. Copia el bit 15 de AX en todo el registro DX
+        CMP[destino][origen]
+          Resta la fuente del destino pero no devuelve resultado. 
+        INC[destino]
+          Suma una unidad al destino (byte o palabra), puede ser un registro o una posición de memoria
+        DEC[destino]
+          Decrementa una unidad al destino (byte o palabra), puede ser un registro o una posición de memoria
+        

@@ -1,0 +1,33 @@
+ALU: Recibe las instrucciones y maneja los datos de acuerdo al programa en curso
+Partes ALU: 
+  Circuitos encargados de realizar las operaciones (Operador) 
+    Tipos de operadores
+      Operadores generales y especializados
+	Los operadores generales realizan distintos tipos de operaciones, todas ellas simples.
+	Los operadores complejos realizan un tipo de operación de difícil ejecución.
+      Operadores combinacionales y secuenciales
+	Los combinacionales suministran su salida en función de los datos de entrada
+	Los secuenciales 
+      Operadores serie y paralelo
+	Los paralelos realizan las operaciones simultáneamente sobre todos los dígitos de los operandos
+	Los serie lo realizan de forma secuencial.
+  Banco de registros de tipo general (Almacena de forma temporal los operandos de cada instrucción)
+  Acumulador (Registro donde se deposita el resultado de la operación)
+  Conjunto de señalizadores (Registro banderas 16 bits) ["Conjunto de señalizadores de estado que indican ciertas condiciones obtenidas de la última operación realizada por la ALU"]
+  Secuenciador ["A veces una instrucción se descompone en varias operaciones elementales, por lo que necesitaremos un secuenciador que genere las señales apropiadas para la correcta ejecución de la instrucción"]
+  
+En la ALU podemos realizar 3 tipos de operaciones
+  Operaciones de desplazamiento
+    ["Los desplazamientos se realizan corriendo los bits de una palabra, dato o registro hacia la derecha o hacia la izquierda"]
+    Desplazando todos los bits una posición a la derecha/izquierda
+    Tipos de desplazamientos:
+      Lógicos
+	Bit libre a 0, bit desplazado se pierde
+      Circulares
+	Bit desplazado se mueve a posición libre
+      Aritméticos
+	Se coloca el bit de signo en la posición libre, bit desplazado se pierde
+  Operaciones aritméticas
+    Sumas, restas, multiplicaciones, etc.
+  Operaciones lógicas
+    and, or, xor, etc.
