@@ -1,7 +1,7 @@
 ###Grado en informática de gestión y sistemas de la información
 (UPV/EHU, 2013/~)
 
-Asignatura: Existen apuntes en la carpeta
+Asignatura: Existen apuntes en la carpeta  
 `Asignatura`: No se entregaron apuntes o no se han conseguido
 
 * 1º
