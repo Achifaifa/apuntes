@@ -15,3 +15,9 @@ Asignatura: Existen apuntes en la carpeta
   * Principios de diseño de sistemas digitales
   * Programación básica
   * Programación orientada a objetos
+* 2º
+  * Bases de Datos
+  * Estructuras de Datos
+  * Ingeniería del software
+  * Redes
+  * Sistemas Operativos
