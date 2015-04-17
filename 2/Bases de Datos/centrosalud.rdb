@@ -1,0 +1,21 @@
+@centroSalud(barrio/char,localidad/char,responsable/char):barrio, localidad
+gros,H2,resp1
+
+@localidad(nombre/char,codPostal/numeric,concejal/char):nombre
+H1,20001,nombre1
+
+@medico(codigo/numeric,nombre/char,barrio/char,localidad/char):codigo
+1,med1,H3,H4
+
+@telefonos(telefono/numeric,codMedico/numeric):telefono, codMedico
+1234,med1
+
+@trabaja(codMedico/numeric,barrio/char,localidad/char):codMedico, trabaja, localidad
+med1,gros,H3
+
+@atiende(barrio/char,localidad/char,locCentro/char):barrio, localidad, locCentro
+egia,H2,gros
+
+@asegurado(codOsakidetza/numeric,nombre/char,ap1/char,ap2/char,locEmpad/char,medico/numeric,barrio/char,locCentro/char):codOsakidetza
+123,ase1,ap1ase1,ap2ase1,H5,1,gros,gros
+
